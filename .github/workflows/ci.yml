@@ -33,3 +33,11 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'notify vercel'
+      uses: 'vercel/repository-dispatch/actions/status@v1'
+      with:
+        name: 'Vercel - strava2geojson: ci'
