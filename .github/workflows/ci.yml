@@ -36,6 +36,8 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
+    permissions:
+      statuses: write
     steps:
     - name: 'notify vercel'
       uses: 'vercel/repository-dispatch/actions/status@v1'
