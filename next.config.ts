@@ -1,7 +1,9 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    testProxy: process.env.PLAYWRIGHT_TEST === 'true',
+  },
 };
 
 export default nextConfig;

@@ -20,6 +20,9 @@
 # production
 /build
 
+# generated data
+/src/data
+
 # misc
 .DS_Store
 *.pem
@@ -39,3 +42,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# dotenv
+.env
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

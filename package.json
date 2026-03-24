@@ -4,13 +4,18 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "predev": "npm run fetch-osm",
     "build": "next build",
+    "prebuild": "npm run fetch-osm",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "e2e": "playwright test",
+    "fetch-osm": "node ./scripts/fetch-osm-data.ts"
   },
   "dependencies": {
     "@mapbox/polyline": "^1.2.1",
+    "@turf/bbox": "^7.3.4",
     "@turf/helpers": "^7.3.4",
     "@turf/point-to-line-distance": "^7.3.4",
     "@turf/simplify": "^7.3.4",
@@ -21,6 +26,7 @@
     "strava-v3": "^4.0.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
@@ -33,6 +39,9 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
     "jsdom": "^29.0.1",
+    "msw": "^2.12.14",
+    "osmtogeojson": "^3.0.0-beta.5",
+    "overpass-ts": "^4.3.8",
     "typescript": "^5",
     "vitest": "^4.1.0"
   }

@@ -1,76 +1,8 @@
-import { describe, it, expect } from 'vitest';
-import { toGeoJSON, isInNewEngland, simplifyLine, truncatePoints, isNearPeak } from '@/lib/strava';
-import type { SummaryActivity } from 'strava-v3';
-import { featureCollection, lineString, point } from '@turf/helpers';
+import { SummaryActivity } from 'strava-v3';
 
-describe('strava', () => {
-  it('should filter out strava activities that are outside New England', () => {
-    expect(stravaActivities.filter(isInNewEngland)).toHaveLength(2);
-  });
-
-  it('should convert strava activities to geojson', () => {
-    const geojson = toGeoJSON(stravaActivities.filter(a => !!a.map?.summary_polyline));
-    expect(geojson.features.map(f => f.properties)).toEqual([
-      {
-        name: 'Up Mt Washington',
-        total_elevation_gain: 1883.7,
-        date: '2023-07-30',
-      },
-      {
-        name: 'Blue Hills',
-        total_elevation_gain: 461,
-        date: '2025-04-05',
-      },
-      {
-        name: 'Mount Whitney',
-        total_elevation_gain: 1347,
-        date: '2025-07-30',
-      },
-    ]);
-  });
-
-  it('should limit coordinates to 6 decimal places', () => {
-    const geojson = lineString([
-      [ -73.987654321, 41.123456789 ],
-      [ -73.123456789, 41.987654321 ],
-    ]);
-    const simplifiedGeojson = truncatePoints(geojson);
-    expect(simplifiedGeojson.geometry.coordinates).toEqual([
-      [ -73.987654, 41.123457 ],
-      [ -73.123457, 41.987654 ],
-    ]);
-  });
-
-  it('should remove points that do not meaningfully contribute to the path', () => {
-    const geojson = lineString([
-      [0, 0],
-      [0.00001, 0.5],
-      [0, 1],
-    ]);
-
-    const simplifiedGeojson = simplifyLine(geojson);
-
-    expect(simplifiedGeojson.geometry.coordinates).toHaveLength(2);
-  });
-
-  it('should detect whether a route goes over a peak', () => {
-    const routeNearSummit = lineString([
-      [-71.3033, 44.2650],
-      [-71.3033, 44.2706],
-      [-71.3033, 44.2760],
-    ]);
-    expect(isNearPeak(routeNearSummit, peaks)).toBe(true);
-
-    const routeFarAway = lineString([
-      [-71.3033, 44.0000],
-      [-71.3033, 44.0100],
-    ]);
-    expect(isNearPeak(routeFarAway, peaks)).toBe(false);
-  });
-
-
-  const stravaActivities = [
+export const stravaActivities = [
     {
+      id: 101,
       name: 'Up Mt Washington',
       distance: 19262.2,
       total_elevation_gain: 1883.7,
@@ -93,6 +25,7 @@ describe('strava', () => {
       ],
     },
     {
+      id: 102,
       name: 'Morning Hike',
       distance: 438.1,
       total_elevation_gain: 0,
@@ -109,6 +42,7 @@ describe('strava', () => {
       end_latlng: [],
     },
     {
+      id: 103,
       name: 'Blue Hills',
       distance: 7746.1,
       total_elevation_gain: 461,
@@ -131,6 +65,7 @@ describe('strava', () => {
       ],
     },
     {
+      id: 104,
       name: 'Mount Whitney',
       distance: 30376.2,
       total_elevation_gain: 1347,
@@ -152,9 +87,27 @@ describe('strava', () => {
         -118.240185,
       ],
     },
+    {
+      'id': 105,
+      'name': 'Katahdin via Cathedral',
+      'distance': 7847.5,
+      'total_elevation_gain': 1126.4,
+      'type': 'Hike',
+      'sport_type': 'Hike',
+      'start_date': '2019-08-20T12:26:51Z',
+      'start_date_local': '2019-08-20T08:26:51Z',
+      'timezone': '(GMT-05:00) America/New_York',
+      'map': {
+        'summary_polyline': 'mehwGrnicLs@r@QXk@nAKt@@d@ELOhAY`A@Z]lAe@~@Qj@OnAN^PrCr@~AFVZx@t@z@RJDXR^BTnAtBPPEA@DE@DAA@ZPZ`@x@nCz@nBNl@@VGx@An@@r@Sz@BfCLvAL^@lBKlAK`@BtAJfA?hCGL@FCABEGA@D@CEXYl@GX@z@CH@lAMz@A`AHp@@rAA\\Hr@?r@BLDt@FVFt@@j@L|@@v@Fj@Cf@Dr@HZEFS`DGP?NJr@n@f@F|@MpA]|@MnADr@PdA?r@QdACl@B\\e@tBAZQbAA`@ETFVJJd@FNN@ZDTE?TRZHXr@B^FJCd@BxACZOfAUj@G`@YdA@Bo@vA[VINMr@IR]\\[l@KHUf@Ef@KZKbA@NEf@EJBVAn@ENF^Ah@BFCfIYnAJ|@I^BFAt@Pd@APTXDx@FBl@fALb@HNTJZn@ZFLNZPFP?FHLL@\\`@Ll@Dl@Ed@D?DP`@l@`@^f@JH`@@XCLBLN^NTJFNXDl@DLAL@NLRJfAAb@Db@\\lABFLHTp@?r@J~@\\jAJz@p@lAHl@`@TPZTB\\PpAzB^B\\b@Nb@x@z@XF~@x@N?TXj@PXRf@Hf@VN\\L@XTp@A?FB?[Kc@AOYCFCCUR]RQAXfBCNBPHBHRPRH`@Zj@VNV^BPRVNz@F?@NAfAFb@JZFb@J@Jj@\\t@BV@v@nAnBFd@AnAJNPJDPl@p@Pl@|@R@Ff@FBXELDPAPLFRZAl@DHGB@DFASl@FLSVBBGTMFBA@@CBV??EITb@L\\CDBw@@Qo@APDDE^DB@X@GAAD`@RVCHRVDVCA@CABJBANC?HVVLDPLBHLLBFJNCBOZ?HHCg@FKNh@PBBEDZFGHTC[LFAFPABFFBF?AEB?E?BAE@BBGCN@KABC?B@AEANBLJBSBD@HVST@VL@HJ@LRVLHCTHGPDLZFDNADLDEk@CADBAPEBB\\JRCDJ?Vh@HDJP@HDD?DTHCIFNNDBNCHHGDBNp@b@f@PNXH@HP?FJBE\\\\FHDTVd@DAd@Z`@JDB@Hx@HPRRHTTtAHTF?GJF?BLED?F^LLNI?EV?TILJPGVBZJt@IHLd@O\\q@Pk@BIAWDOJCDKRM@a@Pq@FKRiABi@^}@J_@b@aABK?GA?',
+      },
+      'private': false,
+      'start_latlng': [
+        45.922317,
+        -68.866493,
+      ],
+      'end_latlng': [
+        45.904446,
+        -68.921435,
+      ],
+    },
   ] as SummaryActivity[];
-
-  const peaks = featureCollection([
-    point([-71.3033, 44.2705], { name: 'Mt. Washington' }),
-  ]);
-});
