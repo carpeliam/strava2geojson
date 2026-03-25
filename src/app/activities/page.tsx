@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { FeatureCollection, Point } from 'geojson';
 import { isInNewEngland, simplifyLine, toGeoJSON, truncatePoints, attachNearbyPeaks } from '@/lib/transforms';
 import peaks from '@/data/peaks.json';
+import ActivityItem from './ActivityItem';
 
 const peakNames = Object.fromEntries(
   peaks.features.map((f) => [f.id, f.properties?.name]),
@@ -58,40 +59,9 @@ async function ActivityList({ activities }: { activities: Awaited<ReturnType<typ
   return (
     <form action="/activities/export" method="POST">
       <ul>
-        {activityFeatures.map((feature) => {
-          const { name, date, total_elevation_gain, peaks: peakIds } = feature.properties!;
-          const { id, ...featureWithoutId } = feature;
-
-          return (
-            <li key={id as string}>
-              <label>
-                <input type="checkbox" name="include" value={JSON.stringify(featureWithoutId)} defaultChecked />
-                <a href={`https://www.strava.com/activities/${id}`} target="_blank" rel="noreferrer">
-                  {name}
-                </a>
-              </label>
-              <p>
-                <time dateTime={date}>
-                  {new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                </time>
-                {' · '}
-                {total_elevation_gain}m gain
-                {' · '}
-                {peakIds.map((peakId: string) => peakNames[peakId]).join(', ')}
-              </p>
-              <div>
-                <label>
-                  Name
-                  <input type="text" name={`name-${id}`} defaultValue={name} />
-                </label>
-                <label>
-                  URL
-                  <input type="text" name={`url-${id}`} />
-                </label>
-              </div>
-            </li>
-          );
-        })}
+        {activityFeatures.map(feature => (
+          <ActivityItem key={feature.id} feature={feature} peakNames={peakNames} />
+        ))}
       </ul>
       <button type="submit">Save activities</button>
     </form>
