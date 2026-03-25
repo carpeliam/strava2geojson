@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Strava2GeoJSON Trail Collector
 
-## Getting Started
+## What is this?
 
-First, run the development server:
+**I'm collecting hikes.** Many of us want to get out into the mountains, but we're not always sure how to get there and then get back. Some of the best inspiration comes from the places others have gone before, and that's where you come in.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+When you share your Strava activities, this tool works with you to pare them down to a list that others can get inspiration from, removing any identifying data in the process.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How does it work?
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Here it is in 3 fairly easy steps:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1.  Authorize Strava to fetch your activities. We only care about the ones in New England that touch a mountain peak, all others are ignored.
+2.  For each activity, you can choose whether to share it; you can also give it a name and a link. If the hike was connected to a MITOC trip, that link would be especially helpful.
+3.  Download the resulting list of selected activities (if you're curious, you can use [geojson.io](https://geojson.io/) to visualize what's in it) and share it with me.
 
-## Learn More
+No activities are stored or sent anywhere unless you choose to download and share them, and the source code for this is open source.
 
-To learn more about Next.js, take a look at the following resources:
+## Is this a MITOC thing?
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Hopefully, at some point! This is a personal project at the moment, but if it's helpful to the club, then it could become a MITOC thing.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## What do you do with routes after I send them to you?
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+I incorporate them into the [MITOC Trail Viewer](https://carpeliam.com/mitoc-trail-viewer/).
