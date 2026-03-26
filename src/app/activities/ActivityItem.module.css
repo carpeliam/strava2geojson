@@ -1,0 +1,31 @@
+.activityItem {
+  color: black;
+  display: flex;
+  align-items: first baseline;
+  column-gap: 0.5rem;
+  & > input {
+    flex: 0;
+  }
+  & > div {
+    flex: 1;
+  }
+}
+
+.fieldGrouping {
+  display: flex;
+  gap: 0.5rem;
+  & > * {
+    flex: 1;
+  }
+
+  & label {
+    display: flex;
+    align-content: stretch;
+    gap: 0.25rem;
+    align-items: baseline;
+    white-space: nowrap;
+    & > * {
+      flex: 1;
+    }
+  }
+}

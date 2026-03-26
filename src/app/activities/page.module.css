@@ -1,0 +1,25 @@
+.activities {
+  --item-complete: #d4edda;
+  --item-incomplete: #ffeeba;
+  --item-empty: #f8d7da;
+  --item-disabled: gray;
+
+  list-style-type: none;
+  padding: 0;
+
+  border: 1px solid black;
+  border-radius: 0.75rem;
+  overflow: hidden;
+
+  & > li {
+    padding: 0.5rem;
+    & + li {
+      border-top: 1px solid black;
+    }
+  }
+
+  label {
+    font-weight: bold;
+  }
+}
+

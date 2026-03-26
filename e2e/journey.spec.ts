@@ -1,6 +1,8 @@
 import { test, expect, http, HttpResponse, passthrough } from 'next/experimental/testmode/playwright/msw';
 import { loadEnv } from 'vite';
 import { stravaActivities } from '../spec/support/fixtures';
+import { readFile } from 'node:fs/promises';
+import type { FeatureCollection, LineString } from 'geojson';
 
 const { STRAVA_CLIENT_ID } = loadEnv('development', process.cwd(), 'STRAVA');
 
@@ -54,8 +56,15 @@ test('can download geojson based on activities', async ({ page }) => {
   const secondRow = page.getByRole('listitem').nth(1);
   await secondRow.getByRole('checkbox').uncheck();
 
-  const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Save activities' }).click();
-  const download = await downloadPromise;
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.getByRole('button', { name: 'Save activities' }).click(),
+  ]);
   expect(download.suggestedFilename()).toBe('routes.geojson');
+  const fileContents = JSON.parse(await readFile(await download.path(), 'utf8')) as FeatureCollection<LineString>;
+
+  expect(fileContents.features[0].properties).toEqual(expect.objectContaining({
+    name: 'Mount Washington',
+    url: 'https://trips.com/washington',
+  }));
 });

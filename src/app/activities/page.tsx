@@ -6,6 +6,7 @@ import { FeatureCollection, Point } from 'geojson';
 import { isInNewEngland, simplifyLine, toGeoJSON, truncatePoints, attachNearbyPeaks } from '@/lib/transforms';
 import peaks from '@/data/peaks.json';
 import ActivityItem from './ActivityItem';
+import styles from './page.module.css';
 
 const peakNames = Object.fromEntries(
   peaks.features.map((f) => [f.id, f.properties?.name]),
@@ -58,7 +59,7 @@ async function ActivityList({ activities }: { activities: Awaited<ReturnType<typ
 
   return (
     <form action="/activities/export" method="POST">
-      <ul>
+      <ul className={styles.activities}>
         {activityFeatures.map(feature => (
           <ActivityItem key={feature.id} feature={feature} peakNames={peakNames} />
         ))}

@@ -20,6 +20,7 @@
     "@turf/point-to-line-distance": "^7.3.4",
     "@turf/simplify": "^7.3.4",
     "@turf/truncate": "^7.3.4",
+    "modern-normalize": "^3.0.1",
     "next": "16.2.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
