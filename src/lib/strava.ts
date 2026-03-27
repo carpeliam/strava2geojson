@@ -12,7 +12,7 @@ export function getAuthUrl(scope: string): string {
   return strava.oauth.getRequestAccessURL({ scope });
 }
 
-const PER_PAGE = 100;
+const PER_PAGE = 200;
 export async function fetchAllActivities(accessToken: string): Promise<SummaryActivity[]> {
   const all: SummaryActivity[] = [];
   let page = 1;
