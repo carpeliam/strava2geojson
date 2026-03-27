@@ -21,10 +21,10 @@ export default function ActivityItem({ feature, peakNames }: Props) {
   const [isUrlPresent, setUrlPresent] = useState(false);
 
   const itemState = () => {
-    if (!isChecked) return 'disabled';
-    if (!isNamePresent) return 'empty';
-    if (!isUrlPresent) return 'incomplete';
-    return 'complete';
+    if (!isChecked) return styles.disabled;
+    if (!isNamePresent) return styles.empty;
+    if (!isUrlPresent) return styles.incomplete;
+    return styles.complete;
   };
 
   const updateName = (name: string) => {
@@ -33,13 +33,13 @@ export default function ActivityItem({ feature, peakNames }: Props) {
     saveFeature({ ...savedFeature, properties });
   };
   const updateUrl = (url: string) => {
-    setUrlPresent(url !== '');
+    setUrlPresent(url.startsWith('http'));
     const properties = { ...savedFeature.properties, url };
     saveFeature({ ...savedFeature, properties });
   };
 
   return (
-    <li className={styles.activityItem} style={{ backgroundColor: `var(--item-${itemState()})` }}>
+    <li className={`${styles.activityItem} ${itemState()}`}>
       <input
         aria-label={`Include ${name}`}
         type="checkbox"
@@ -69,7 +69,7 @@ export default function ActivityItem({ feature, peakNames }: Props) {
               </label>
               <label>
                 Trip URL
-                <input type="text" name={`url-${id}`} onChange={e => updateUrl(e.target.value)} placeholder='https://mitoc-trips.mit.edu/trips/1234/' />
+                <input type="url" name={`url-${id}`} onChange={e => updateUrl(e.target.value)} placeholder='https://mitoc-trips.mit.edu/trips/1234/' />
               </label>
             </div>
           </>

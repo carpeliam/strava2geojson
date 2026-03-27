@@ -1,20 +1,19 @@
 .activities {
-  --item-complete: #d4edda;
-  --item-incomplete: #ffeeba;
-  --item-empty: #f8d7da;
-  --item-disabled: gray;
+  --border-color: #333;
+  --background-color: var(--background);
 
   list-style-type: none;
   padding: 0;
 
-  border: 1px solid black;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
   border-radius: 0.75rem;
   overflow: hidden;
 
   & > li {
     padding: 0.5rem;
     & + li {
-      border-top: 1px solid black;
+      border-top: 1px solid var(--border-color);
     }
   }
 
@@ -23,3 +22,8 @@
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  .activities {
+    --background-color: #1a1a1a;
+  }
+}

@@ -1,13 +1,32 @@
 .activityItem {
-  color: black;
+  --item-complete: #038718;
+  --item-incomplete: #cf6300;
+  --item-empty: #d91240;
+  --item-disabled: gray;
+
   display: flex;
   align-items: first baseline;
   column-gap: 0.5rem;
+  border-left: 4px solid transparent;
+
   & > input {
     flex: 0;
   }
   & > div {
     flex: 1;
+  }
+
+  &.complete {
+    border-left-color: var(--item-complete);
+  }
+  &.incomplete {
+    border-left-color: var(--item-incomplete);
+  }
+  &.empty {
+    border-left-color: var(--item-empty);
+  }
+  &.disabled {
+    background-color: var(--item-disabled);
   }
 }
 
