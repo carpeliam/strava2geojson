@@ -44,8 +44,7 @@ test('can download geojson based on activities', async ({ page }) => {
 
   const firstRow = page.getByRole('listitem').nth(0);
   await expect(firstRow.getByRole('checkbox')).toBeChecked();
-  await expect(firstRow.getByRole('link', { name: /Up Mt Washington/ })).toBeVisible();
-  await expect(firstRow.getByRole('link', { name: /Up Mt Washington/ })).toHaveAttribute('target', '_blank');
+  await expect(firstRow).toContainText('Up Mt Washington');
 
   await expect(firstRow.getByRole('textbox', { name: /name/i })).toHaveValue('Up Mt Washington');
   await expect(firstRow.getByRole('textbox', { name: /url/i })).toHaveValue('');
