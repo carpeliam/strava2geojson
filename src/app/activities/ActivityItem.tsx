@@ -49,14 +49,13 @@ export default function ActivityItem({ feature, peakNames }: Props) {
         onChange={e => setChecked(e.target.checked)}
       />
       <div>
-        <a href={`https://www.strava.com/activities/${id}`} target="_blank" rel="noreferrer">
-          {name}
-        </a>
+        {name}
         {!isChecked && (
           <span> · <time dateTime={date}>{formattedDate}</time> · {peakList}</span>
         )}
         {isChecked && (
           <>
+            &nbsp;(<a href={`https://www.strava.com/activities/${id}`} style={{ fontWeight: 'bold' }} target="_blank" rel="noreferrer">View on Strava</a>)
             <div>
               <time dateTime={date}>{formattedDate}</time>
               {' · '}{total_elevation_gain}m gain

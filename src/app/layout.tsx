@@ -25,6 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>{children}</body>
+      <footer>Powered by Strava</footer>
     </html>
   );
 }
