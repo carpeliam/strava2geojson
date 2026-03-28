@@ -2,13 +2,14 @@ import { Suspense } from 'react';
 import { getSession } from '@/lib/session';
 import { fetchAllActivities } from '@/lib/strava';
 import { redirect } from 'next/navigation';
-import { FeatureCollection, Point } from 'geojson';
+import { Feature, FeatureCollection, LineString, Point } from 'geojson';
 import { isInNewEngland, simplifyLine, toGeoJSON, truncatePoints, attachNearbyPeaks } from '@/lib/transforms';
 import peaks from '@/data/peaks.json';
 import ActivityItem from './ActivityItem';
 import styles from './page.module.css';
+import { fetchTrips } from '@/lib/trips';
 
-const peakNames = Object.fromEntries(
+const peakNameForId = Object.fromEntries(
   peaks.features.map((f) => [f.id, f.properties?.name]),
 );
 const withNearbyPeaks = attachNearbyPeaks(peaks as FeatureCollection<Point>);
@@ -36,16 +37,19 @@ async function AuthenticatedActivities() {
 }
 
 async function FetchedActivities({ accessToken }: { accessToken: string }) {
-  const activities = await fetchAllActivities(accessToken);
+  const [activities, trips] = await Promise.all([
+    fetchAllActivities(accessToken),
+    fetchTrips(),
+  ]);
 
   return (
     <Suspense fallback={<p>Transforming to GeoJSON...</p>}>
-      <ActivityList activities={activities} />
+      <ActivityList activities={activities} trips={trips} />
     </Suspense>
   );
 }
 
-async function ActivityList({ activities }: { activities: Awaited<ReturnType<typeof fetchAllActivities>> }) {
+async function ActivityList({ activities, trips }: { activities: Awaited<ReturnType<typeof fetchAllActivities>>, trips: Awaited<ReturnType<typeof fetchTrips>> }) {
   const featureCollection = toGeoJSON(activities.filter(isInNewEngland));
   const activityFeatures = featureCollection.features
     .map(simplifyLine)
@@ -57,12 +61,19 @@ async function ActivityList({ activities }: { activities: Awaited<ReturnType<typ
     return <p>No matching activities found.</p>;
   }
 
+  function activityItemForFeature(feature: Feature<LineString>) {
+    const tripsOnDate = trips.get(feature.properties!.date) ?? [];
+    const potentialTrips = tripsOnDate.filter(trip => trip.primaryTripActivity === 'Hiking');
+
+    const peakNames = feature.properties!.peaks.map((peakId: string) => peakNameForId[peakId]).join(', ');
+
+    return <ActivityItem key={feature.id} feature={feature} potentialTrips={potentialTrips} peakNames={peakNames} />;
+  }
+
   return (
     <form action="/activities/export" method="POST">
       <ul className={styles.activities}>
-        {activityFeatures.map(feature => (
-          <ActivityItem key={feature.id} feature={feature} peakNames={peakNames} />
-        ))}
+        {activityFeatures.map(activityItemForFeature)}
       </ul>
       <button type="submit">Save activities</button>
     </form>

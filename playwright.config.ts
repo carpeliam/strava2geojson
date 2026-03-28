@@ -80,6 +80,7 @@ export default defineConfig({
     // stdout: 'pipe',
     env: {
       STRAVA_AUTH_URL: 'http://localhost:3000/test/auth/stub',
+      MITOC_TRIPS_URL: 'https://private.blob.vercel-storage.com/trips.json',
       PLAYWRIGHT_TEST: 'true',
     },
   },

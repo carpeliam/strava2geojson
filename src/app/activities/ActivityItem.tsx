@@ -3,37 +3,39 @@
 import { useState } from 'react';
 import { Feature, LineString } from 'geojson';
 import styles from './ActivityItem.module.css';
+import { Trip } from '@/lib/trips';
 
 interface Props {
   feature: Feature<LineString>;
-  peakNames: Record<string, string>;
+  peakNames: string[];
+  potentialTrips: Trip[];
 }
 
-export default function ActivityItem({ feature, peakNames }: Props) {
+export default function ActivityItem({ feature, peakNames, potentialTrips }: Props) {
   const { name, date, total_elevation_gain, peaks: peakIds } = feature.properties!;
   const { id, ...featureWithoutId } = feature;
   const formattedDate = new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  const peakList = peakIds.map((peakId: string) => peakNames[peakId]).join(', ');
 
   const [savedFeature, saveFeature] = useState(featureWithoutId);
   const [isChecked, setChecked] = useState(true);
-  const [isNamePresent, setNamePresent] = useState(name !== '');
-  const [isUrlPresent, setUrlPresent] = useState(false);
+
+  const [url, setUrl] = useState('');
+  const [routeName, setRouteName] = useState<string>(name);
 
   const itemState = () => {
     if (!isChecked) return styles.disabled;
-    if (!isNamePresent) return styles.empty;
-    if (!isUrlPresent) return styles.incomplete;
+    if (routeName === '') return styles.empty;
+    if (url === '') return styles.incomplete;
     return styles.complete;
   };
 
   const updateName = (name: string) => {
-    setNamePresent(name !== '');
+    setRouteName(name);
     const properties = { ...savedFeature.properties, name };
     saveFeature({ ...savedFeature, properties });
   };
   const updateUrl = (url: string) => {
-    setUrlPresent(url.startsWith('http'));
+    setUrl(url);
     const properties = { ...savedFeature.properties, url };
     saveFeature({ ...savedFeature, properties });
   };
@@ -51,26 +53,39 @@ export default function ActivityItem({ feature, peakNames }: Props) {
       <div>
         {name}
         {!isChecked && (
-          <span> · <time dateTime={date}>{formattedDate}</time> · {peakList}</span>
+          <span> · <time dateTime={date}>{formattedDate}</time> · {peakNames}</span>
         )}
         {isChecked && (
           <>
-            &nbsp;(<a href={`https://www.strava.com/activities/${id}`} style={{ fontWeight: 'bold' }} target="_blank" rel="noreferrer">View on Strava</a>)
+            &nbsp;(<a href={`https://www.strava.com/activities/${id}`} style={{ fontWeight: 'bold' }} target="_blank" rel="noreferrer">View on Strava</a>!)
             <div>
               <time dateTime={date}>{formattedDate}</time>
               {' · '}{total_elevation_gain}m gain
-              {' · '}{peakList}
+              {' · '}{peakNames}
             </div>
             <div className={styles.fieldGrouping}>
               <label>
                 Route Name
-                <input type="text" name={`name-${id}`} defaultValue={name} onChange={e => updateName(e.target.value)} />
+                <input type="text" name={`name-${id}`} value={routeName} onChange={e => updateName(e.target.value)} />
               </label>
               <label>
                 Trip URL
-                <input type="url" name={`url-${id}`} onChange={e => updateUrl(e.target.value)} placeholder='https://mitoc-trips.mit.edu/trips/1234/' />
+                <input type="url" name={`url-${id}`} value={url} onChange={e => updateUrl(e.target.value)} placeholder='https://mitoc-trips.mit.edu/trips/1234/' />
               </label>
             </div>
+            {potentialTrips.every(trip => trip.url !== url) && (
+              <div>
+                abc
+                {potentialTrips.map(trip => (
+                  <div key={trip.id}>
+                    <label>
+                      <input type="radio" onChange={() => { updateName(trip.name); updateUrl(trip.url); }} /> {trip.name}
+                    </label>
+                    &nbsp;(<a href={trip.url} target="_blank">View in MITOC Trips</a>)
+                  </div>
+                ))}
+              </div>
+            )}
           </>
         )}
       </div>

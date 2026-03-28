@@ -1,6 +1,6 @@
 import { test, expect, http, HttpResponse, passthrough } from 'next/experimental/testmode/playwright/msw';
 import { loadEnv } from 'vite';
-import { stravaActivities } from '../spec/support/fixtures';
+import { stravaActivities, trips } from '../spec/support/fixtures';
 import { readFile } from 'node:fs/promises';
 import type { FeatureCollection, LineString } from 'geojson';
 
@@ -20,6 +20,9 @@ test.use({
       ),
       http.get('https://www.strava.com/api/v3/athlete/activities', () =>
         HttpResponse.json(stravaActivities),
+      ),
+      http.get('https://private.blob.vercel-storage.com/trips.json', () =>
+        HttpResponse.json(trips),
       ),
       http.all('*', () => passthrough()),
     ],
@@ -46,11 +49,12 @@ test('can download geojson based on activities', async ({ page }) => {
   await expect(firstRow.getByRole('checkbox')).toBeChecked();
   await expect(firstRow).toContainText('Up Mt Washington');
 
-  await expect(firstRow.getByRole('textbox', { name: /name/i })).toHaveValue('Up Mt Washington');
-  await expect(firstRow.getByRole('textbox', { name: /url/i })).toHaveValue('');
+  await expect(firstRow.getByLabel('Route Name')).toHaveValue('Up Mt Washington');
+  await page.getByLabel('Mt Isolation via Boott Spur').click();
+  await expect(firstRow.getByLabel('Trip URL')).toHaveValue('https://mitoc-trips.mit.edu/trips/123/');
 
-  await firstRow.getByRole('textbox', { name: /name/i }).fill('Mount Washington');
-  await firstRow.getByRole('textbox', { name: /url/i }).fill('https://trips.com/washington');
+  await firstRow.getByLabel('Route Name').fill('Mount Washington');
+  await firstRow.getByLabel('Trip URL').fill('https://trips.com/washington');
 
   const secondRow = page.getByRole('listitem').nth(1);
   await secondRow.getByRole('checkbox').uncheck();
