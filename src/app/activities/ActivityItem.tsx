@@ -57,7 +57,7 @@ export default function ActivityItem({ feature, peakNames, potentialTrips, check
         )}
         {checked && (
           <>
-            &nbsp;(<a href={`https://www.strava.com/activities/${id}`} style={{ fontWeight: 'bold' }} target="_blank" rel="noreferrer">View on Strava</a>!)
+            &nbsp;(<a href={`https://www.strava.com/activities/${id}`} style={{ fontWeight: 'bold' }} target="_blank" rel="noreferrer">View on Strava</a>)
             <div>
               <time dateTime={date}>{formattedDate}</time>
               {' · '}{total_elevation_gain}m gain
