@@ -9,21 +9,21 @@ interface Props {
   feature: Feature<LineString>;
   peakNames: string[];
   potentialTrips: Trip[];
+  checked: boolean;
+  onChecked: (id: number) => void;
 }
 
-export default function ActivityItem({ feature, peakNames, potentialTrips }: Props) {
-  const { name, date, total_elevation_gain, peaks: peakIds } = feature.properties!;
+export default function ActivityItem({ feature, peakNames, potentialTrips, checked, onChecked }: Props) {
+  const { name, date, total_elevation_gain } = feature.properties!;
   const { id, ...featureWithoutId } = feature;
   const formattedDate = new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-  const [savedFeature, saveFeature] = useState(featureWithoutId);
-  const [isChecked, setChecked] = useState(true);
-
   const [url, setUrl] = useState('');
   const [routeName, setRouteName] = useState<string>(name);
+  const [savedFeature, saveFeature] = useState(featureWithoutId);
 
   const itemState = () => {
-    if (!isChecked) return styles.disabled;
+    if (!checked) return styles.disabled;
     if (routeName === '') return styles.empty;
     if (url === '') return styles.incomplete;
     return styles.complete;
@@ -47,15 +47,15 @@ export default function ActivityItem({ feature, peakNames, potentialTrips }: Pro
         type="checkbox"
         name="include"
         value={JSON.stringify(savedFeature)}
-        checked={isChecked}
-        onChange={e => setChecked(e.target.checked)}
+        checked={checked}
+        onChange={() => onChecked(id as number)}
       />
       <div>
         {name}
-        {!isChecked && (
+        {!checked && (
           <span> · <time dateTime={date}>{formattedDate}</time> · {peakNames}</span>
         )}
-        {isChecked && (
+        {checked && (
           <>
             &nbsp;(<a href={`https://www.strava.com/activities/${id}`} style={{ fontWeight: 'bold' }} target="_blank" rel="noreferrer">View on Strava</a>!)
             <div>
@@ -75,7 +75,6 @@ export default function ActivityItem({ feature, peakNames, potentialTrips }: Pro
             </div>
             {potentialTrips.every(trip => trip.url !== url) && (
               <div>
-                abc
                 {potentialTrips.map(trip => (
                   <div key={trip.id}>
                     <label>

@@ -36,3 +36,8 @@ export async function fetchTrips(): Promise<Map<string, Trip[]>> {
   tripsCache = buildTripIndex(trips);
   return tripsCache;
 }
+
+export function hikingTripsForDate(date: string, trips: Map<string, Trip[]>) {
+  const tripsOnDate = trips.get(date) ?? [];
+  return tripsOnDate.filter(trip => trip.primaryTripActivity === 'Hiking');
+}

@@ -38,6 +38,10 @@ input {
   accent-color: var(--action);
 }
 
+label {
+  font-weight: bold;
+}
+
 button {
   appearance: none;
   -webkit-appearance: none;

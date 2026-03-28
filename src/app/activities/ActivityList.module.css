@@ -1,3 +1,8 @@
+.selectAll {
+  margin-left: 0.75rem;
+  margin-right: 0.5rem;
+}
+
 .activities {
   --border-color: #333;
   --background-color: var(--background);
@@ -15,10 +20,6 @@
     & + li {
       border-top: 1px solid var(--border-color);
     }
-  }
-
-  label {
-    font-weight: bold;
   }
 }
 

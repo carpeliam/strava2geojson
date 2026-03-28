@@ -2,12 +2,11 @@ import { Suspense } from 'react';
 import { getSession } from '@/lib/session';
 import { fetchAllActivities } from '@/lib/strava';
 import { redirect } from 'next/navigation';
-import { Feature, FeatureCollection, LineString, Point } from 'geojson';
+import { FeatureCollection, Point } from 'geojson';
 import { isInNewEngland, simplifyLine, toGeoJSON, truncatePoints, attachNearbyPeaks } from '@/lib/transforms';
 import peaks from '@/data/peaks.json';
-import ActivityItem from './ActivityItem';
-import styles from './page.module.css';
-import { fetchTrips } from '@/lib/trips';
+import { fetchTrips, hikingTripsForDate } from '@/lib/trips';
+import ActivityList from './ActivityList';
 
 const peakNameForId = Object.fromEntries(
   peaks.features.map((f) => [f.id, f.properties?.name]),
@@ -42,40 +41,30 @@ async function FetchedActivities({ accessToken }: { accessToken: string }) {
     fetchTrips(),
   ]);
 
+  function buildActivityList() {
+    const featureCollection = toGeoJSON(activities.filter(isInNewEngland));
+    const activityFeatures = featureCollection.features
+      .map(simplifyLine)
+      .map(truncatePoints)
+      .map(withNearbyPeaks)
+      .filter(f => f.properties?.peaks?.length > 0);
+
+    if (activityFeatures.length === 0) {
+      return <p>No matching activities found.</p>;
+    }
+
+    const activitiesWithTrips = activityFeatures.map(feature => (
+      { feature, potentialTrips: hikingTripsForDate(feature.properties!.date, trips) }
+    ));
+
+    return (
+      <ActivityList activities={activitiesWithTrips} peakNameForId={peakNameForId} />
+    );
+  }
+
   return (
     <Suspense fallback={<p>Transforming to GeoJSON...</p>}>
-      <ActivityList activities={activities} trips={trips} />
+      {buildActivityList()}
     </Suspense>
-  );
-}
-
-async function ActivityList({ activities, trips }: { activities: Awaited<ReturnType<typeof fetchAllActivities>>, trips: Awaited<ReturnType<typeof fetchTrips>> }) {
-  const featureCollection = toGeoJSON(activities.filter(isInNewEngland));
-  const activityFeatures = featureCollection.features
-    .map(simplifyLine)
-    .map(truncatePoints)
-    .map(withNearbyPeaks)
-    .filter(f => f.properties?.peaks?.length > 0);
-
-  if (activityFeatures.length === 0) {
-    return <p>No matching activities found.</p>;
-  }
-
-  function activityItemForFeature(feature: Feature<LineString>) {
-    const tripsOnDate = trips.get(feature.properties!.date) ?? [];
-    const potentialTrips = tripsOnDate.filter(trip => trip.primaryTripActivity === 'Hiking');
-
-    const peakNames = feature.properties!.peaks.map((peakId: string) => peakNameForId[peakId]).join(', ');
-
-    return <ActivityItem key={feature.id} feature={feature} potentialTrips={potentialTrips} peakNames={peakNames} />;
-  }
-
-  return (
-    <form action="/activities/export" method="POST">
-      <ul className={styles.activities}>
-        {activityFeatures.map(activityItemForFeature)}
-      </ul>
-      <button type="submit">Save activities</button>
-    </form>
   );
 }

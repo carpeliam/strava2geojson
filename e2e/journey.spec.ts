@@ -48,6 +48,7 @@ test('can download geojson based on activities', async ({ page }) => {
   const firstRow = page.getByRole('listitem').nth(0);
   await expect(firstRow.getByRole('checkbox')).toBeChecked();
   await expect(firstRow).toContainText('Up Mt Washington');
+  await expect(firstRow).toContainText('Boott Spur, Mount Isolation, Mount Washington, Lion Head, North Isolation');
 
   await expect(firstRow.getByLabel('Route Name')).toHaveValue('Up Mt Washington');
   await page.getByLabel('Mt Isolation via Boott Spur').click();
@@ -66,8 +67,10 @@ test('can download geojson based on activities', async ({ page }) => {
   expect(download.suggestedFilename()).toBe('routes.geojson');
   const fileContents = JSON.parse(await readFile(await download.path(), 'utf8')) as FeatureCollection<LineString>;
 
+  expect(fileContents.features).toHaveLength(1);
   expect(fileContents.features[0].properties).toEqual(expect.objectContaining({
     name: 'Mount Washington',
     url: 'https://trips.com/washington',
+    peaks: ['node/357729727', 'node/357730186', 'node/2432687944', 'node/2951268816', 'node/7289040579'],
   }));
 });
