@@ -6,6 +6,7 @@ import simplify from '@turf/simplify';
 import truncate from '@turf/truncate';
 import pointToLineDistance from '@turf/point-to-line-distance';
 import bbox from '@turf/bbox';
+import distance from '@turf/distance';
 
 const BOUNDS = { minLat: 41, minLng: -73.8, maxLat: 47.6, maxLng: -66.7 };
 function isInBounds (latLng: LatLng | null) {
@@ -27,6 +28,15 @@ export function toGeoJSON(activities: SummaryActivity[]): FeatureCollection<Line
     return lineString(coordinates, { name, total_elevation_gain, date: start_date_local.split('T')[0] }, { id: activity.id });
   });
   return featureCollection(features);
+}
+
+
+const CONTINUITY_THRESHOLD = 1.5;
+export function isContinuous(feature: Feature<LineString>) {
+  const coords = feature.geometry.coordinates;
+  return coords.every((coord, i) =>
+    i === 0 || distance(coords[i - 1], coord) <= CONTINUITY_THRESHOLD,
+  );
 }
 
 

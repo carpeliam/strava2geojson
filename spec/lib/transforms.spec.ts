@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { toGeoJSON, isInNewEngland, simplifyLine, truncatePoints, attachNearbyPeaks } from '@/lib/transforms';
+import { toGeoJSON, isInNewEngland, simplifyLine, truncatePoints, attachNearbyPeaks, isContinuous } from '@/lib/transforms';
 import { featureCollection, lineString, point } from '@turf/helpers';
 import { stravaActivities } from '../support/fixtures';
 
 describe('strava', () => {
   it('should filter out strava activities that are outside New England', () => {
-    expect(stravaActivities.filter(isInNewEngland)).toHaveLength(3);
+    expect(stravaActivities.filter(isInNewEngland)).toHaveLength(4);
   });
 
   it('should convert strava activities to geojson', () => {
@@ -43,7 +43,22 @@ describe('strava', () => {
           date: '2019-08-20',
         },
       },
+      {
+        id: 106,
+        properties: {
+          name: 'My watch was paused almost the whole time because I wasn’t going fast enough',
+          total_elevation_gain: 0,
+          date: '2022-12-29',
+        },
+      },
     ]);
+  });
+
+  it('should filter activities where any two consecutive points are greater than 1.5km', () => {
+    const features = toGeoJSON(stravaActivities.filter(a => !!a.map?.summary_polyline)).features
+      .filter(isContinuous);
+    expect(features).toHaveLength(4);
+    expect(features.map(f => f.properties!.name)).not.toContain('My watch was paused almost the whole time because I wasn’t going fast enough');
   });
 
   it('should limit coordinates to 6 decimal places', () => {

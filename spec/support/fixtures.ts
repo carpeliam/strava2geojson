@@ -91,6 +91,24 @@ export const stravaActivities = [
     start_latlng: [45.922317, -68.866493],
     end_latlng: [45.904446, -68.921435],
   },
+{
+    id: 106,
+    name: 'My watch was paused almost the whole time because I wasn’t going fast enough',
+    distance: 365.8,
+    total_elevation_gain: 0,
+    type: 'Hike',
+    sport_type: 'Hike',
+    start_date: '2022-12-29T14:06:54Z',
+    start_date_local: '2022-12-29T09:06:54Z',
+    timezone: '(GMT-05:00) America/New_York',
+    map: {
+      summary_polyline:
+        'uhodGv{~vLeaBfvBFDjFiNBIACE?t@sCZSP[LCZQ^b@~@k@JMFW^M`@WNc@zH{GHQJeAvbAulAFa@Dk@h@mANk@KK',
+    },
+    private: false,
+    start_latlng: [42.845711, -72.089071],
+    end_latlng: [42.845693, -72.088623],
+  },
 ] as SummaryActivity[];
 
 export const trips: Trip[] = [

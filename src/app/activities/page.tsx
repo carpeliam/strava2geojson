@@ -3,7 +3,7 @@ import { getSession } from '@/lib/session';
 import { fetchAllActivities } from '@/lib/strava';
 import { redirect } from 'next/navigation';
 import { FeatureCollection, Point } from 'geojson';
-import { isInNewEngland, simplifyLine, toGeoJSON, truncatePoints, attachNearbyPeaks } from '@/lib/transforms';
+import { isInNewEngland, simplifyLine, toGeoJSON, truncatePoints, attachNearbyPeaks, isContinuous } from '@/lib/transforms';
 import peaks from '@/data/peaks.json';
 import { fetchTrips, hikingTripsForDate } from '@/lib/trips';
 import ActivityList from './ActivityList';
@@ -44,6 +44,7 @@ async function FetchedActivities({ accessToken }: { accessToken: string }) {
   function buildActivityList() {
     const featureCollection = toGeoJSON(activities.filter(isInNewEngland));
     const activityFeatures = featureCollection.features
+      .filter(isContinuous)
       .map(simplifyLine)
       .map(truncatePoints)
       .map(withNearbyPeaks)
