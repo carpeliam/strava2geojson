@@ -45,7 +45,7 @@ if (isCached()) {
   out;
   `;
 
-  mkdirSync(dataDir, { recursive: true });
+
 
   console.log('Fetching OSM data from Overpass…');
   const data = await overpassJson(OVERPASS_QUERY);
@@ -64,8 +64,10 @@ if (isCached()) {
   );
 
   console.log('Writing cache…');
+  mkdirSync(cacheDir, { recursive: true });
   writeFileSync(peaksCache, JSON.stringify(geojson));
 }
 console.log('copying cached file to data dir…');
+mkdirSync(dataDir, { recursive: true });
 copyFileSync(peaksCache, peaksFile);
 console.log('Done.');
