@@ -13,6 +13,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: actions/cache@v4
+      name: Cache src/data/peaks.json
+      with:
+        path: |
+          ${{ github.workspace }}/src/data/peaks.json
+        key: ${{ runner.os }}-peaks-data
+    - uses: actions/cache@v4
+      name: Cache .next/cache
       with:
         path: |
           ${{ github.workspace }}/.next/cache
@@ -21,11 +28,6 @@ jobs:
         # If source files changed but packages didn't, rebuild from a prior cache.
         restore-keys: |
           ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-    - uses: actions/cache@v4
-      with:
-        path: |
-          ${{ github.workspace }}/src/data/peaks.json
-        key: ${{ runner.os }}-peaks-data
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
