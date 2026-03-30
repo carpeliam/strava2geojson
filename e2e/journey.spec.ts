@@ -51,14 +51,17 @@ test('can download geojson based on activities', async ({ page }) => {
   await expect(firstRow).toContainText('Boott Spur, Mount Isolation, Mount Washington, Lion Head, North Isolation');
 
   await expect(firstRow.getByLabel('Route Name')).toHaveValue('Up Mt Washington');
-  await page.getByLabel('Mt Isolation via Boott Spur').click();
-  await expect(firstRow.getByLabel('Trip URL')).toHaveValue('https://mitoc-trips.mit.edu/trips/123/');
 
   await firstRow.getByLabel('Route Name').fill('Mount Washington');
   await firstRow.getByLabel('Trip URL').fill('https://trips.com/washington');
 
   const secondRow = page.getByRole('listitem').nth(1);
   await secondRow.getByRole('checkbox').uncheck();
+
+  const thirdRow = page.getByRole('listitem').nth(2);
+  await page.getByLabel('Cool Cats on Cannon').click();
+  await expect(thirdRow.getByLabel('Route Name')).toHaveValue('Cool Cats on Cannon');
+  await expect(thirdRow.getByLabel('Trip URL')).toHaveValue('https://mitoc-trips.mit.edu/trips/456/');
 
   const [download] = await Promise.all([
     page.waitForEvent('download'),
@@ -67,10 +70,15 @@ test('can download geojson based on activities', async ({ page }) => {
   expect(download.suggestedFilename()).toBe('routes.geojson');
   const fileContents = JSON.parse(await readFile(await download.path(), 'utf8')) as FeatureCollection<LineString>;
 
-  expect(fileContents.features).toHaveLength(1);
+  expect(fileContents.features).toHaveLength(2);
   expect(fileContents.features[0].properties).toEqual(expect.objectContaining({
     name: 'Mount Washington',
     url: 'https://trips.com/washington',
     peaks: ['node/357729727', 'node/357730186', 'node/2432687944', 'node/2951268816', 'node/7289040579'],
+  }));
+  expect(fileContents.features[1].properties).toEqual(expect.objectContaining({
+    name: 'Cool Cats on Cannon',
+    url: 'https://mitoc-trips.mit.edu/trips/456/',
+    peaks: ['node/357731219'],
   }));
 });

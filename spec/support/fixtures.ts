@@ -91,7 +91,7 @@ export const stravaActivities = [
     start_latlng: [45.922317, -68.866493],
     end_latlng: [45.904446, -68.921435],
   },
-{
+  {
     id: 106,
     name: 'My watch was paused almost the whole time because I wasn’t going fast enough',
     distance: 365.8,
@@ -108,6 +108,24 @@ export const stravaActivities = [
     private: false,
     start_latlng: [42.845711, -72.089071],
     end_latlng: [42.845693, -72.088623],
+  },
+  {
+    id: 107,
+    name: 'Cannon, uncursed',
+    distance: 10950.6,
+    total_elevation_gain: 765,
+    type: 'Hike',
+    sport_type: 'Hike',
+    start_date: '2026-02-15T15:50:17Z',
+    start_date_local: '2026-02-15T10:50:17Z',
+    timezone: '(GMT-05:00) America/New_York',
+    map: {
+      summary_polyline:
+        'iollGdaptL\\rBA\\Wn@KbAs@`AEv@Jp@X`@`@~AL|@lApBXJ`@z@JMZJd@d@HEICDLEIXQr@FnAzA~@[lA@`@Nl@AZVnBD`ALz@Td@VaA`@w@rAu@NQh@oA`AeA~AyAxAWBo@h@y@fAa@jAPCY?IOXH[XY?Yl@AP]VI\\Gd@Jf@n@`@^f@VlAKd@?|@KnBX~@Jr@LjCh@nC]bCTRFd@U}@}@d@qAfAk@dAq@N]d@Ip@MPDVc@XNCeBx@Ut@a@Zu@FQRSEYPg@bCHfCKp@A~@u@|AcATy@~@_@~@[j@M@DFcAf@S\\ARu@DWU}@d@c@Uq@P@GcBOSIAOGV_@e@qAb@m@BWC_ABOZ[Km@FCMsCCMPeDpAoBXOa@IeA{@eB_Aq@eA{CEqBJYEs@FGOGWqAH_@Q@RMEi@H@QQFa@QMAi@Oc@ICPSF_@QFH]Mq@e@k@Gg@iAUi@m@_@y@M{@]g@}@Oq@n@g@Ck@\\_@EoAkAuASmA}@_CFAQe@_@ODFSMTFDAMDNOANH@MAPASIVJKOIFEEFIDXe@IR?@HKAPKBHQ\\LVf@lCAp@x@bB\\v@d@b@d@ZY`AKp@m@~@DKJT@p@rB~@lAtAd@@\\VFNd@A|@Lf@QLCj@Xl@CWEGLb@ALICRE@S?P?MG@E^LRDVC[KZHI?T?QICNRHRKNHJCd@K?\\LWQEFLA?f@JVFM@LGFJPGCDTK|@HfBMFZd@TdAhB~AVdAGb@Pm@IVDITb@FnAJH`Dw@zBcA|@IPNdBGz@^HWn@U`A?PP`@O?Y`@EvAZb@EELHHtB]^`@TM@Uf@FlAORg@z@]@Qj@g@l@qAz@s@TBl@w@XeCK_ABiAXw@HgALSTO~AUZUHe@`@Ov@aAh@OH[v@JVNBAGOl@X~@k@dCmDGu@]cAIAP}@FmAEi@c@eA?iAOyA_@uACcAZaD[qAME[cAm@[D}@|@aBl@Kn@}Af@q@|CkCl@iAz@g@fA{A|AcB|@q@uAc@QJyB_@cCk@gAAq@Tm@s@cAi@c@CUX}@q@QNUi@{AaBg@iAc@}B[c@Sw@Dg@n@y@l@eBBu@Oo@OgE`@_CqBsCI@',
+    },
+    private: false,
+    start_latlng: [44.142135, -71.685461],
+    end_latlng: [44.142592, -71.683462],
   },
 ] as SummaryActivity[];
 
@@ -138,5 +156,32 @@ export const trips: Trip[] = [
     ],
     description:
       "### Description\r\n\r\nLeaving *early* (4:00 am) Sunday morning, we'll be heading up to Boott Spur via the Lion Head route. From there, we'll continue south to visit Mt Isolation before coming down the Glen Boulder Trail.\r\n\r\n### Itinerary\r\n\r\n[Suggested trail map](https://www.komoot.com/plan/tour/d01AqNPNfvAxCA=FxjUBNZCQ-EkDZfP_FxG-2at45CKarzNtEfIw0Fw/@44.2541261,-71.2614965,13.110z). As it stands, this is about 13.5 miles of hiking with about 5k feet of elevation gain.\r\n\r\n### Note on difficulty\r\n\r\nThis is a hard hike. [The Lion Head route is steep](https://www.outdoorproject.com/united-states/new-hampshire/mount-washington-lion-head-trail-summer-route) and dangerous for newbies. For the entire party's safety, hikers will be vetted for this hike.\r\n\r\nIf the trail conditions are poor, we'll consider something easier (possibly going up Glen Boulder instead of Lion Head). \r\n\r\n### Weather\r\n\r\n[Mount Washington weather report](https://trailsnh.com/weather/n/2432687944/Mount-Washington-NH-Summit-Forecast).\r\n\r\n[Nearby city weather report](https://www.wunderground.com/forecast/us/nh/gorham)\r\n\r\nIf there is rain all Sunday, will the hike still happen? If the forecast is for light rain, yes (but make sure you have hiking rain gear).\r\n\r\nIf there is lightning in the forecast, will the hike still happen? We'll likely abort the trip if lightning can't be avoided, but possibly offer a hike in a different region with better weather.\r\n\r\n### Mandatory pre-trip meeting\r\n\r\nThursday evening, 8:00 pm\r\n\r\n### Other\r\n\r\nIf you have questions about the hike, feel free to email the trip leaders.",
+  },
+  {
+    id: 456,
+    name: 'Cool Cats on Cannon',
+    url: 'https://mitoc-trips.mit.edu/trips/456/',
+    program: 'Winter (outside IAP)',
+    primaryTripActivity: 'Hiking',
+    tripDate: '2026-02-15',
+    leaders: [
+      {
+        name: 'Adam Driver',
+        id: 6,
+        url: 'https://mitoc-trips.mit.edu/participants/6/',
+      },
+      {
+        name: 'Lionel Messi',
+        id: 5,
+        url: 'https://mitoc-trips.mit.edu/participants/5/',
+      },
+      {
+        name: 'Seth Rogan',
+        id: 4,
+        url: 'https://mitoc-trips.mit.edu/participants/4/',
+      },
+    ],
+    description:
+      "Join us on Sunday for one of the most beautiful hikes in the Whites: Mt Cannon. We will stop by the beautiful lonesome lake on the way up. We will hike a total of 6 miles with 2400ft of elevation gain.\r\n\r\n**Prerequisites:** We likely won't have a pre-trip meeting so we expect you to be self-sufficient. We will maintain a moderate, steady pace with limited breaks.\r\n\r\nYou also will need to be a Winter School leader or have attended MITOC Winter Safety lectures within the past year, and have some winter hiking experience. If you have any questions or uncertainty about your preparedness, please reach out to us!\r\n\r\n**Logistics:** We will send you a bunch of spreadsheets to fill. Please read them carefully and fill it up on time. There won't be office hours so you are expected to arrange gear on your own if you are missing any. We will depart Cambridge Sunday morning (at a reasonable hour)!\r\n\r\n**Drivers and Lottery:** If you can drive your own car or are willing to drive, please update your lottery preferences to reflect this. Only mark “willing to drive/rent others” if you can commit to round-trip driving from the Boston/Cambridge area.\r\n\r\n**Costs:** Please budget for a $5 trip fee, $30–50 for carpooling costs, any personal gear rentals (capped at $15), and any food you purchase along the way. We will use the MIT car cost calculator and share costs equally among participants.",
   },
 ];

@@ -34,9 +34,10 @@ export default function ActivityItem({ feature, peakNames, potentialTrips, check
     const properties = { ...savedFeature.properties, name };
     saveFeature({ ...savedFeature, properties });
   };
-  const updateUrl = (url: string) => {
+  const updateNameAndUrl = (name: string, url: string) => {
+    setRouteName(name);
     setUrl(url);
-    const properties = { ...savedFeature.properties, url };
+    const properties = { ...savedFeature.properties, name, url };
     saveFeature({ ...savedFeature, properties });
   };
 
@@ -70,7 +71,7 @@ export default function ActivityItem({ feature, peakNames, potentialTrips, check
               </label>
               <label>
                 Trip URL
-                <input type="url" name={`url-${id}`} value={url} onChange={e => updateUrl(e.target.value)} placeholder='https://mitoc-trips.mit.edu/trips/1234/' />
+                <input type="url" name={`url-${id}`} value={url} onChange={e => updateNameAndUrl(routeName, e.target.value)} placeholder='https://mitoc-trips.mit.edu/trips/...' />
               </label>
             </div>
             {potentialTrips.every(trip => trip.url !== url) && (
@@ -78,7 +79,7 @@ export default function ActivityItem({ feature, peakNames, potentialTrips, check
                 {potentialTrips.map(trip => (
                   <div key={trip.id}>
                     <label>
-                      <input type="radio" onChange={() => { updateName(trip.name); updateUrl(trip.url); }} /> {trip.name}
+                      <input type="radio" onChange={() => { updateNameAndUrl(trip.name, trip.url); }} /> {trip.name}
                     </label>
                     &nbsp;(<a href={trip.url} target="_blank">View in MITOC Trips</a>)
                   </div>

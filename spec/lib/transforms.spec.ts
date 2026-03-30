@@ -5,7 +5,7 @@ import { stravaActivities } from '../support/fixtures';
 
 describe('strava', () => {
   it('should filter out strava activities that are outside New England', () => {
-    expect(stravaActivities.filter(isInNewEngland)).toHaveLength(4);
+    expect(stravaActivities.filter(isInNewEngland)).toHaveLength(5);
   });
 
   it('should convert strava activities to geojson', () => {
@@ -51,13 +51,21 @@ describe('strava', () => {
           date: '2022-12-29',
         },
       },
+      {
+        id: 107,
+        properties: {
+          name: 'Cannon, uncursed',
+          total_elevation_gain: 765,
+          date: '2026-02-15',
+        },
+      },
     ]);
   });
 
   it('should filter activities where any two consecutive points are greater than 1.5km', () => {
     const features = toGeoJSON(stravaActivities.filter(a => !!a.map?.summary_polyline)).features
       .filter(isContinuous);
-    expect(features).toHaveLength(4);
+    expect(features).toHaveLength(5);
     expect(features.map(f => f.properties!.name)).not.toContain('My watch was paused almost the whole time because I wasn’t going fast enough');
   });
 
