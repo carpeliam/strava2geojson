@@ -15,6 +15,7 @@ describe('strava', () => {
         id: 101,
         properties: {
           name: 'Up Mt Washington',
+          distance: 19262.2,
           total_elevation_gain: 1883.7,
           date: '2023-07-30',
         },
@@ -23,6 +24,7 @@ describe('strava', () => {
         id: 103,
         properties: {
           name: 'Blue Hills',
+          distance: 7746.1,
           total_elevation_gain: 461,
           date: '2025-04-05',
         },
@@ -31,6 +33,7 @@ describe('strava', () => {
         id: 104,
         properties: {
           name: 'Mount Whitney',
+          distance: 30376.2,
           total_elevation_gain: 1347,
           date: '2025-07-30',
         },
@@ -39,6 +42,7 @@ describe('strava', () => {
         id: 105,
         properties: {
           name: 'Katahdin via Cathedral',
+          distance: 7847.5,
           total_elevation_gain: 1126.4,
           date: '2019-08-20',
         },
@@ -47,6 +51,7 @@ describe('strava', () => {
         id: 106,
         properties: {
           name: 'My watch was paused almost the whole time because I wasn’t going fast enough',
+          distance: 365.8,
           total_elevation_gain: 0,
           date: '2022-12-29',
         },
@@ -55,6 +60,7 @@ describe('strava', () => {
         id: 107,
         properties: {
           name: 'Cannon, uncursed',
+          distance: 10950.6,
           total_elevation_gain: 765,
           date: '2026-02-15',
         },

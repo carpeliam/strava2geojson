@@ -22,4 +22,4 @@ Hopefully, at some point! This is a personal project at the moment, but if it's 
 
 ## What do you do with routes after I send them to you?
 
-I incorporate them into the [MITOC Trail Viewer](https://carpeliam.com/mitoc-trail-viewer/).
+I incorporate them into the [MITOC Trail Viewer](https://github.com/carpeliam/mitoc-trail-viewer).

@@ -24,8 +24,8 @@ export function isInNewEngland(activity: SummaryActivity): boolean {
 export function toGeoJSON(activities: SummaryActivity[]): FeatureCollection<LineString> {
   const features = activities.map(activity => {
     const coordinates = polyline.decode(activity.map!.summary_polyline).map(([lat, lng]) => [lng, lat]);
-    const { name, total_elevation_gain, start_date_local } = activity;
-    return lineString(coordinates, { name, total_elevation_gain, date: start_date_local.split('T')[0] }, { id: activity.id });
+    const { name, distance, total_elevation_gain, start_date_local } = activity;
+    return lineString(coordinates, { name, distance, total_elevation_gain, date: start_date_local.split('T')[0] }, { id: activity.id });
   });
   return featureCollection(features);
 }

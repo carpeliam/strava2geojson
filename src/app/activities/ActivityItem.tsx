@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function ActivityItem({ feature, peakNames, potentialTrips, checked, onChecked }: Props) {
-  const { name, date, total_elevation_gain } = feature.properties!;
+  const { name, date, distance, total_elevation_gain } = feature.properties!;
   const { id, ...featureWithoutId } = feature;
   const formattedDate = new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
@@ -61,7 +61,7 @@ export default function ActivityItem({ feature, peakNames, potentialTrips, check
             &nbsp;(<a href={`https://www.strava.com/activities/${id}`} style={{ fontWeight: 'bold' }} target="_blank" rel="noreferrer">View on Strava</a>)
             <div>
               <time dateTime={date}>{formattedDate}</time>
-              {' · '}{total_elevation_gain}m gain
+              {' · '}{metersToMiles(distance)} mi distance, {metersToFeet(total_elevation_gain)} ft gain
               {' · '}{peakNames}
             </div>
             <div className={styles.fieldGrouping}>
@@ -91,4 +91,13 @@ export default function ActivityItem({ feature, peakNames, potentialTrips, check
       </div>
     </li>
   );
+}
+
+const METERS_TO_FEET = 3.28084;
+function metersToFeet(meters: number): string {
+  return Math.round(meters * METERS_TO_FEET).toLocaleString();
+}
+const FEET_PER_MILE = 5280;
+function metersToMiles(meters: number): string {
+  return (meters * METERS_TO_FEET / FEET_PER_MILE).toFixed(2);
 }
