@@ -37,9 +37,16 @@
     flex: 1;
   }
 
+  @media (max-width: 480px) {
+    flex-direction: column;
+    & input {
+      width: 100%;
+    }
+  }
+
   & label {
     display: flex;
-    align-content: stretch;
+    flex-direction: inherit;
     gap: 0.25rem;
     align-items: baseline;
     white-space: nowrap;
