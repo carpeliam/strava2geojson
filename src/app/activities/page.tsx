@@ -55,7 +55,7 @@ async function FetchedActivities({ accessToken }: { accessToken: string }) {
     }
 
     const activitiesWithTrips = activityFeatures.map(feature => (
-      { feature, potentialTrips: hikingTripsForDate(feature.properties!.date, trips) }
+      { feature, potentialTrips: hikingTripsForDate(feature.properties.date, trips) }
     ));
 
     return (

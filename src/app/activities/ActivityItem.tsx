@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { Feature, LineString } from 'geojson';
+import type { Feature, LineString } from 'geojson';
+import type { ActivityProperties } from '@/lib/transforms';
+import type { Trip } from '@/lib/trips';
 import styles from './ActivityItem.module.css';
-import { Trip } from '@/lib/trips';
 
 interface Props {
-  feature: Feature<LineString, { name: string, date: string, distance: number, total_elevation_gain: number }>;
-  peakNames: string[];
+  feature: Feature<LineString, ActivityProperties>;
+  peakNames: string;
   potentialTrips: Trip[];
   checked: boolean;
   onChecked: (id: number) => void;

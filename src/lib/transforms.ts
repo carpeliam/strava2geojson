@@ -8,6 +8,15 @@ import pointToLineDistance from '@turf/point-to-line-distance';
 import bbox from '@turf/bbox';
 import distance from '@turf/distance';
 
+export interface ActivityProperties {
+  name: string;
+  date: string;
+  distance: number;
+  total_elevation_gain: number;
+  peaks: string[];
+}
+type ActivityWithoutPeaksProperties = Omit<ActivityProperties, 'peaks'>;
+
 const BOUNDS = { minLat: 41, minLng: -73.8, maxLat: 47.6, maxLng: -66.7 };
 function isInBounds (latLng: LatLng | null) {
   if (!latLng) return false;
@@ -21,7 +30,7 @@ export function isInNewEngland(activity: SummaryActivity): boolean {
 }
 
 
-export function toGeoJSON(activities: SummaryActivity[]): FeatureCollection<LineString> {
+export function toGeoJSON(activities: SummaryActivity[]): FeatureCollection<LineString, ActivityWithoutPeaksProperties> {
   const features = activities.map(activity => {
     const coordinates = polyline.decode(activity.map!.summary_polyline).map(([lat, lng]) => [lng, lat]);
     const { name, distance, total_elevation_gain, start_date_local } = activity;
@@ -51,7 +60,7 @@ export function truncatePoints<T extends AllGeoJSON>(lineString: T): T {
 
 const PEAK_DISTANCE_THRESHOLD = 50; // meters
 const BBOX_PADDING = 0.01; // degrees; roughly 1km
-export function attachNearbyPeaks(peaks: FeatureCollection<Point>): (lineString: Feature<LineString>) => Feature<LineString> {
+export function attachNearbyPeaks(peaks: FeatureCollection<Point>): (lineString: Feature<LineString, ActivityWithoutPeaksProperties>) => Feature<LineString, ActivityProperties> {
   return (lineString) => {
     const peakIds = peaks.features
       .filter(peak => {
@@ -60,7 +69,7 @@ export function attachNearbyPeaks(peaks: FeatureCollection<Point>): (lineString:
         if (lng < minLng - BBOX_PADDING || lng > maxLng + BBOX_PADDING || lat < minLat - BBOX_PADDING || lat > maxLat + BBOX_PADDING) return false;
         return pointToLineDistance(peak, lineString, { units: 'meters' }) < PEAK_DISTANCE_THRESHOLD;
       })
-      .map(peak => peak.id);
+      .map(peak => peak.id as string);
     return { ...lineString, properties: { ...lineString.properties, peaks: peakIds } };
   };
 }

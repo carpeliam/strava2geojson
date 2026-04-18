@@ -1,15 +1,17 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Feature, LineString } from 'geojson';
 import { saveAs } from 'file-saver';
 import { featureCollection } from '@turf/helpers';
-import { Trip } from '@/lib/trips';
 import ActivityItem from './ActivityItem';
+import type { Feature, LineString } from 'geojson';
+import type { ActivityProperties } from '@/lib/transforms';
+import type { Trip } from '@/lib/trips';
 import styles from './ActivityList.module.css';
 
+
 interface ActivityWithTrips {
-  feature: Feature<LineString>;
+  feature: Feature<LineString, ActivityProperties>;
   potentialTrips: Trip[];
 }
 interface Props {
@@ -42,7 +44,7 @@ export default function ActivityList({ activities, peakNameForId }: Props) {
   };
 
   function activityItem({ feature, potentialTrips }: ActivityWithTrips) {
-    const peakNames = feature.properties!.peaks.map((peakId: string) => peakNameForId[peakId]).join(', ');
+    const peakNames = feature.properties.peaks.map((peakId: string) => peakNameForId[peakId]).join(', ');
 
     return (
       <ActivityItem key={feature.id}
