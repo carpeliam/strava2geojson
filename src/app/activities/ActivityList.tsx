@@ -18,6 +18,7 @@ interface Props {
 }
 
 export default function ActivityList({ activities, peakNameForId }: Props) {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [checked, setChecked] = useState<Map<number, boolean>>(
     () => new Map(activities.map(a => [a.feature.id as number, true])),
   );
@@ -67,8 +68,9 @@ export default function ActivityList({ activities, peakNameForId }: Props) {
           url: formData.get(`url-${id}`),
         },
       }));
-    const collection = featureCollection(features);
-    saveAs(new Blob([JSON.stringify(collection)], { type: 'application/geo+json' }), 'routes.geojson');
+    const collectionJson = JSON.stringify(featureCollection(features));
+    saveAs(new Blob([collectionJson], { type: 'application/geo+json' }), 'routes.geojson');
+    setPreviewUrl(`https://geojson.io/#data=data:application/json,${encodeURIComponent(collectionJson)}`);
   }
 
   return (
@@ -87,6 +89,9 @@ export default function ActivityList({ activities, peakNameForId }: Props) {
         {activities.map(activityItem)}
       </ul>
       <button type="submit">Save activities</button>
+      {previewUrl && (
+        <p>✅ Saved! · <a href={previewUrl} target="_blank" rel="noreferrer">Preview on geojson.io</a></p>
+      )}
     </form>
   );
 }
