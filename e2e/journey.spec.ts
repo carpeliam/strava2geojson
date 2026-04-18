@@ -71,6 +71,7 @@ test('can download geojson based on activities', async ({ page }) => {
   const fileContents = JSON.parse(await readFile(await download.path(), 'utf8')) as FeatureCollection<LineString>;
 
   expect(fileContents.features).toHaveLength(2);
+  expect(fileContents.features[0].id).toBeUndefined();
   expect(fileContents.features[0].properties).toEqual(expect.objectContaining({
     name: 'Mount Washington',
     url: 'https://trips.com/washington',
