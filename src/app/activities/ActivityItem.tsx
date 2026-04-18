@@ -16,7 +16,7 @@ interface Props {
 
 export default function ActivityItem({ feature, peakNames, potentialTrips, checked, onChecked }: Props) {
   const { name, date, distance, total_elevation_gain } = feature.properties;
-  const formattedDate = new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const formattedDate = new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 
   const [url, setUrl] = useState('');
   const [routeName, setRouteName] = useState(name);

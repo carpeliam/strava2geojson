@@ -48,6 +48,7 @@ test('can download geojson based on activities', async ({ page }) => {
   const firstRow = page.getByRole('listitem').nth(0);
   await expect(firstRow.getByRole('checkbox')).toBeChecked();
   await expect(firstRow).toContainText('Up Mt Washington');
+  await expect(firstRow).toContainText('Jul 30, 2023');
   await expect(firstRow).toContainText('Boott Spur, Mount Isolation, Mount Washington, Lion Head, North Isolation');
 
   await expect(firstRow.getByLabel('Route Name')).toHaveValue('Up Mt Washington');
