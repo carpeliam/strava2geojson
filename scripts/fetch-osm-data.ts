@@ -1,8 +1,9 @@
+#!/usr/bin/env node
 import { copyFileSync, existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { overpassJson } from 'overpass-ts';
-import osmtogeojson from 'osmtogeojson';
+import osmtogeojson from 'osm2geojson-lite';
 import { simplifyLine, truncatePoints } from '../src/lib/transforms.ts';
 
 
