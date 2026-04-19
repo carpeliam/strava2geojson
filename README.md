@@ -1,5 +1,7 @@
 # Strava2GeoJSON Trail Collector
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 ## What is this?
 
 **I'm collecting hikes.** Many of us want to get out into the mountains, but we're not always sure how to get there and then get back. Some of the best inspiration comes from the places others have gone before, and that's where you come in.
@@ -23,3 +25,9 @@ Hopefully, at some point! This is a personal project at the moment, but if it's 
 ## What do you do with routes after I send them to you?
 
 I incorporate them into the [MITOC Trail Viewer](https://github.com/carpeliam/mitoc-trail-viewer).
+
+## How can I contribute?
+
+Contributions are extremely welcome! There are two ways you can contribute: contributing hikes as specified above, or contributing code to this repository. See the [contributing guide](CONTRIBUTING.md) for information on how to contribute to this repository, including local setup.
+
+One thing to keep in mind: as this application is primarily an integration with Strava, this (as well as any derivatives) are subject to [Strava's API Agreement](https://www.strava.com/legal/api).
