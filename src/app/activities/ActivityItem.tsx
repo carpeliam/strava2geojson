@@ -6,6 +6,8 @@ import type { ActivityProperties } from '@/lib/transforms';
 import type { Trip } from '@/lib/trips';
 import styles from './ActivityItem.module.css';
 
+const AVAILABLE_KEYWORDS = ['crampons', 'buttsled'];
+
 interface Props {
   feature: Feature<LineString, ActivityProperties>;
   peakNames: string;
@@ -71,6 +73,14 @@ export default function ActivityItem({ feature, peakNames, potentialTrips, check
                 ))}
               </div>
             )}
+            <div className={styles.keywordList}>
+              {AVAILABLE_KEYWORDS.map((keyword) => (
+                <label key={keyword}>
+                  <input type="checkbox" name={`keywords-${feature.id}`} value={keyword} />
+                  {keyword}
+                </label>
+              ))}
+            </div>
           </>
         )}
       </div>

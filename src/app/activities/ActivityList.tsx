@@ -68,6 +68,7 @@ export default function ActivityList({ activities, peakNameForId }: Props) {
           ...feature.properties,
           name: formData.get(`name-${id}`),
           url: formData.get(`url-${id}`),
+          keywords: formData.getAll(`keywords-${id}`),
         },
       }));
     const collectionJson = JSON.stringify(featureCollection(features));

@@ -4,6 +4,10 @@
   --background: #ffffff;
   --foreground: #171717;
 
+  --border: #e2e0dc;
+  --border-strong: #d4d2ce;
+  --surface: #f5f4f2;
+
   --action: #cf361b;
 }
 
@@ -11,6 +15,10 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+
+    --border: #2a2b32;
+    --border-strong: #3a3b44;
+    --surface: #1e1f26;
   }
 }
 
@@ -52,8 +60,9 @@ button {
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
 
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
-              0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.05);
 
   cursor: pointer;
 }

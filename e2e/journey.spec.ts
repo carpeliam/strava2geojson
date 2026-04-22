@@ -1,4 +1,4 @@
-import { test, expect, http, HttpResponse, passthrough } from 'next/experimental/testmode/playwright/msw';
+import { test, expect, http, HttpResponse } from 'next/experimental/testmode/playwright/msw';
 import { loadEnv } from 'vite';
 import { stravaActivities, trips } from '../spec/support/fixtures';
 import { readFile } from 'node:fs/promises';
@@ -24,7 +24,6 @@ test.use({
       http.get('https://private.blob.vercel-storage.com/trips.json', () =>
         HttpResponse.json(trips),
       ),
-      http.all('*', () => passthrough()),
     ],
     { scope: 'test' },
   ],
@@ -46,10 +45,12 @@ test('can download geojson based on activities', async ({ page }) => {
   await expect(page.getByRole('list')).toBeVisible();
 
   const firstRow = page.getByRole('listitem').nth(0);
-  await expect(firstRow.getByRole('checkbox')).toBeChecked();
+  await expect(firstRow.getByRole('checkbox', { name: 'Include Up Mt Washington' })).toBeChecked();
   await expect(firstRow).toContainText('Up Mt Washington');
   await expect(firstRow).toContainText('Jul 30, 2023');
   await expect(firstRow).toContainText('Boott Spur, Mount Isolation, Mount Washington, Lion Head, North Isolation');
+  await firstRow.getByText('crampons').click();
+  await firstRow.getByText('buttsled').click();
 
   await expect(firstRow.getByLabel('Route Name')).toHaveValue('Up Mt Washington');
 
@@ -57,7 +58,7 @@ test('can download geojson based on activities', async ({ page }) => {
   await firstRow.getByLabel('Trip URL').fill('https://trips.com/washington');
 
   const secondRow = page.getByRole('listitem').nth(1);
-  await secondRow.getByRole('checkbox').uncheck();
+  await secondRow.getByRole('checkbox', { name: 'Katahdin via Cathedral' }).uncheck();
 
   const thirdRow = page.getByRole('listitem').nth(2);
   await page.getByLabel('Cool Cats on Cannon').click();
@@ -76,11 +77,13 @@ test('can download geojson based on activities', async ({ page }) => {
   expect(fileContents.features[0].properties).toEqual(expect.objectContaining({
     name: 'Mount Washington',
     url: 'https://trips.com/washington',
+    keywords: ['crampons', 'buttsled'],
     peaks: ['node/357729727', 'node/357730186', 'node/2432687944', 'node/2951268816', 'node/7289040579'],
   }));
   expect(fileContents.features[1].properties).toEqual(expect.objectContaining({
     name: 'Cool Cats on Cannon',
     url: 'https://mitoc-trips.mit.edu/trips/456/',
+    keywords: [],
     peaks: ['node/357731219'],
   }));
 });
